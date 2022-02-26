@@ -8,11 +8,13 @@ import java.io.Serializable;
 public class Country implements Serializable {
     @Id
     @Column(name = "COUNTRY_ID", nullable = false)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
     @Column(name = "COUNTRY_NAME", nullable = false)
     private String name;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "REGION_ID")
     private Region region;
 
@@ -23,11 +25,11 @@ public class Country implements Serializable {
         this.name = name;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

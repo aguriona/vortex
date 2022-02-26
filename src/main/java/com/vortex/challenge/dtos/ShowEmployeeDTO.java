@@ -1,73 +1,30 @@
-package com.vortex.challenge.entities;
+package com.vortex.challenge.dtos;
 
-import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 
-@Entity
-@Table(name = "EMPLOYEES")
-public class Employee implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "EMPLOYEE_ID", nullable = false)
-    private Long id;
+public class ShowEmployeeDTO {
 
-    @Column(name = "FIRST_NAME")
     private String firstName;
-
-    @Column(name = "LAST_NAME")
     private String lastName;
-
-    @Column(name = "EMAIL")
     private String email;
-
-    @Column(name = "PHONE_NUMBER")
     private String phone;
-
-    @Column(name = "HIRE_DATE")
     private Date hireDate;
-
-    @ManyToOne
-    @JoinColumn(name = "JOB_ID")
-    private Job jobId;
-
-    @Column(name = "SALARY")
     private Double salary;
-
-    @Column(name = "COMMISSION_PCT")
     private Double commission;
-
-//    @ManyToOne
-//    @JoinColumn(name = "MANAGER_ID", referencedColumnName = "EMPLOYEE_ID")
-    @Column(name = "MANAGER_ID")
     private Long manager;
 
-    @ManyToOne
-    @JoinColumn(name = "DEPARTMENT_ID")
-    private Department department;
-
-    public Employee() {
+    public ShowEmployeeDTO() {
     }
 
-    public Employee(String firstName, String lastName, String email, String phone, Date hireDate, Job jobId, Double salary, Double commission, Long manager, Department department) {
+    public ShowEmployeeDTO(String firstName, String lastName, String email, String phone, Date hireDate, Double salary, Double commission, Long manager) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
         this.hireDate = hireDate;
-        this.jobId = jobId;
         this.salary = salary;
         this.commission = commission;
         this.manager = manager;
-        this.department = department;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getFirstName() {
@@ -110,14 +67,6 @@ public class Employee implements Serializable {
         this.hireDate = hireDate;
     }
 
-    public Job getJobId() {
-        return jobId;
-    }
-
-    public void setJobId(Job jobId) {
-        this.jobId = jobId;
-    }
-
     public Double getSalary() {
         return salary;
     }
@@ -140,13 +89,5 @@ public class Employee implements Serializable {
 
     public void setManager(Long manager) {
         this.manager = manager;
-    }
-
-    public Department getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(Department department) {
-        this.department = department;
     }
 }

@@ -1,16 +1,14 @@
 package com.vortex.challenge.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
 
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "JOBS")
 public class Job implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "JOB_ID", nullable = false)
     private Long id;
 

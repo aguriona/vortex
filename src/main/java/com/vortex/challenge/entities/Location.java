@@ -9,7 +9,7 @@ public class Location implements Serializable {
     @Id
     @Column(name = "LOCATION_ID", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(name = "STREET_ADDRESS")
     private String street;
@@ -38,11 +38,11 @@ public class Location implements Serializable {
         this.country = country;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

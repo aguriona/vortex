@@ -14,6 +14,9 @@ import java.util.Date;
 @Where(clause = "END_DATE is null")
 public class JobHistory implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @OneToOne
     @JoinColumn(name = "EMPLOYEE_ID")
     private Employee employeeId;

@@ -8,6 +8,7 @@ import java.io.Serializable;
 public class Department implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "DEPARTMENT_ID", nullable = false)
     private Long id;
 
