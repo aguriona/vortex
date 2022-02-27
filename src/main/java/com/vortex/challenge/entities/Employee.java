@@ -1,10 +1,15 @@
 package com.vortex.challenge.entities;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
 @Entity
+@SQLDelete(sql = "UPDATE employees SET deleted_at = now() WHERE employee_id=?")
+@Where(clause = "deleted_at IS NULL")
 @Table(name = "EMPLOYEES")
 public class Employee implements Serializable {
     @Id
@@ -45,6 +50,9 @@ public class Employee implements Serializable {
     @ManyToOne
     @JoinColumn(name = "DEPARTMENT_ID")
     private Department department;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deletedAt;
 
     public Employee() {
     }

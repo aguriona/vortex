@@ -42,9 +42,6 @@ public class Seeder implements CommandLineRunner {
         CreateEmployeeDTO newEmp = new CreateEmployeeDTO();
         Random random = new Random();
 
-        JobHistory jobHistory = new JobHistory();
-
-
         Region region[] = {
                 new Region(faker.lordOfTheRings().location()),
                 new Region(faker.lordOfTheRings().location()),
@@ -108,13 +105,19 @@ public class Seeder implements CommandLineRunner {
             newEmp.setManager(random.nextLong());
             newEmp.setDepartment(departmentList.get(random.nextInt(13)));
             employeeService.create(newEmp);
+
         }
 
 
-//        for (int i = 0; i < 5; i++){
-//            jobHistory.setEmployeeId(employeeRepository.findById(Long.valueOf(random.nextInt(12))).get());
-//
-//        }
+        for (int i = 0; i < 25; i++){
+
+            JobHistory jobHistory = new JobHistory();
+            jobHistory.setEmployeeId(employeeRepository.findById(faker.number().numberBetween(1L,30L)).get());
+            jobHistory.setJobId(jobList.get(random.nextInt(6)));
+            jobHistory.setDepartment(departmentList.get(random.nextInt(13)));
+            jobHistory.setStartDate(faker.date().past(1500, TimeUnit.DAYS));
+            jobHistoryRepository.save(jobHistory);
+        }
 
 
     }

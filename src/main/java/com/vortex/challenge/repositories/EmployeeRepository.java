@@ -1,6 +1,8 @@
 package com.vortex.challenge.repositories;
 
 import com.vortex.challenge.entities.Employee;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,4 +13,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
       //  @Query(value = "SELECT e FROM Employee e WHERE e.eMail = ?1")
         public Optional<Employee> findByEmail(String email);
+
+        Slice<Employee> findBy(Pageable pageable);
 }
