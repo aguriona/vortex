@@ -15,8 +15,9 @@ public class Department implements Serializable {
     @Column(name = "DEPARTMENT_NAME")
     private String name;
 
-    @Column(name = "MANAGER_ID")
-    private Long managerId;
+    @ManyToOne
+    @JoinColumn(name = "MANAGER_ID")
+    private Employee managerId;
 
     @ManyToOne
     @JoinColumn(name = "LOCATION_ID")
@@ -25,7 +26,7 @@ public class Department implements Serializable {
     public Department() {
     }
 
-    public Department(String name, Long managerId, Location location) {
+    public Department(String name, Employee managerId, Location location) {
         this.name = name;
         this.managerId = managerId;
         this.location = location;
@@ -47,11 +48,11 @@ public class Department implements Serializable {
         this.name = name;
     }
 
-    public Long getManagerId() {
+    public Employee getManagerId() {
         return managerId;
     }
 
-    public void setManagerId(Long managerId) {
+    public void setManagerId(Employee managerId) {
         this.managerId = managerId;
     }
 

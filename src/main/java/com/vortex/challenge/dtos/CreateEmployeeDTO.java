@@ -16,7 +16,7 @@ public class CreateEmployeeDTO {
     private Job jobId;
     private Double salary;
     private Double commission;
-    private Long manager;
+    private Employee manager;
     private Department department;
 
     public CreateEmployeeDTO() {
@@ -86,11 +86,11 @@ public class CreateEmployeeDTO {
         this.commission = commission;
     }
 
-    public Long getManager() {
+    public Employee getManager() {
         return manager;
     }
 
-    public void setManager(Long manager) {
+    public void setManager(Employee manager) {
         this.manager = manager;
     }
 

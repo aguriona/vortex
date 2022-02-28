@@ -42,10 +42,9 @@ public class Employee implements Serializable {
     @Column(name = "COMMISSION_PCT")
     private Double commission;
 
-//    @ManyToOne
-//    @JoinColumn(name = "MANAGER_ID", referencedColumnName = "EMPLOYEE_ID")
-    @Column(name = "MANAGER_ID")
-    private Long manager;
+    @ManyToOne
+    @JoinColumn(name = "MANAGER_ID", referencedColumnName = "EMPLOYEE_ID")
+    private Employee manager;
 
     @ManyToOne
     @JoinColumn(name = "DEPARTMENT_ID")
@@ -57,7 +56,7 @@ public class Employee implements Serializable {
     public Employee() {
     }
 
-    public Employee(String firstName, String lastName, String email, String phone, Date hireDate, Job jobId, Double salary, Double commission, Long manager, Department department) {
+    public Employee(String firstName, String lastName, String email, String phone, Date hireDate, Job jobId, Double salary, Double commission, Employee manager, Department department) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -142,11 +141,11 @@ public class Employee implements Serializable {
         this.commission = commission;
     }
 
-    public Long getManager() {
+    public Employee getManager() {
         return manager;
     }
 
-    public void setManager(Long manager) {
+    public void setManager(Employee manager) {
         this.manager = manager;
     }
 

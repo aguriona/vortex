@@ -4,6 +4,7 @@ import com.github.javafaker.Faker;
 import com.vortex.challenge.dtos.CreateEmployeeDTO;
 import com.vortex.challenge.entities.*;
 import com.vortex.challenge.repositories.*;
+import com.vortex.challenge.services.DepartmentService;
 import com.vortex.challenge.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -35,12 +36,19 @@ public class Seeder implements CommandLineRunner {
     JobRepository jobRepository;
     @Autowired
     JobHistoryRepository jobHistoryRepository;
+    @Autowired
+    DepartmentService departmentService;
 
     @Override
     public void run(String... args) throws Exception {
 
         CreateEmployeeDTO newEmp = new CreateEmployeeDTO();
         Random random = new Random();
+
+        Employee manager = new Employee();
+        manager.setFirstName("UnManager");
+        employeeRepository.save(manager);
+
 
         Region region[] = {
                 new Region(faker.lordOfTheRings().location()),
@@ -71,12 +79,14 @@ public class Seeder implements CommandLineRunner {
             locationRepository.save(location);
             locationList.add(location);
         }
+
         List<Department> departmentList = new ArrayList<>();
         for (int i = 0; i < 14; i++) {
+
             Department department = new Department();
             department.setName(faker.job().field());
             department.setLocation(locationList.get(random.nextInt(11)));
-            department.setManagerId(random.nextLong());
+            department.setManagerId(manager);
             departmentRepository.save(department);
             departmentList.add(department);
         }
@@ -93,6 +103,7 @@ public class Seeder implements CommandLineRunner {
 
         for (int i = 0; i < 30; i++) {
 
+
             newEmp.setFirstName(faker.name().firstName());
             newEmp.setLastName(faker.name().lastName());
             newEmp.setSalary(faker.number().randomDouble(2, 500, 8000));
@@ -102,7 +113,7 @@ public class Seeder implements CommandLineRunner {
             newEmp.setJobId(jobList.get(random.nextInt(6)));
             newEmp.setSalary(faker.number().randomDouble(2, 1000, 12000));
             newEmp.setCommission(faker.number().randomDouble(2, 100, 1200));
-            newEmp.setManager(random.nextLong());
+            newEmp.setManager(manager);
             newEmp.setDepartment(departmentList.get(random.nextInt(13)));
             employeeService.create(newEmp);
 
@@ -118,6 +129,8 @@ public class Seeder implements CommandLineRunner {
             jobHistory.setStartDate(faker.date().past(1500, TimeUnit.DAYS));
             jobHistoryRepository.save(jobHistory);
         }
+
+
 
 
     }
