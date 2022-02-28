@@ -20,7 +20,7 @@ public class DepartmentController {
     DepartmentService departmentService;
 
     @PostMapping
-    public ResponseEntity<?> create (@RequestBody Department department){
+    public ResponseEntity<?> create(@RequestBody Department department) {
 
         return ResponseEntity.created(URI.create("")).body(departmentService.create(department));
     }

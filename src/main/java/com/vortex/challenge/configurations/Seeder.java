@@ -45,8 +45,20 @@ public class Seeder implements CommandLineRunner {
         CreateEmployeeDTO newEmp = new CreateEmployeeDTO();
         Random random = new Random();
 
+        List<Job> jobList = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            Job job = new Job();
+            job.setJobTitle(faker.job().title());
+            job.setMaxSalary(faker.number().randomDouble(2, 1100, 12000));
+            job.setMinSalary(faker.number().randomDouble(2, 1000, 5000));
+            jobRepository.save(job);
+            jobList.add(job);
+        }
+
         Employee manager = new Employee();
-        manager.setFirstName("UnManager");
+        manager.setFirstName("Principal Manager");
+        manager.setSalary(5000D);
+        manager.setJobId(jobList.get(1));
         employeeRepository.save(manager);
 
 
@@ -90,15 +102,6 @@ public class Seeder implements CommandLineRunner {
             departmentRepository.save(department);
             departmentList.add(department);
         }
-        List<Job> jobList = new ArrayList<>();
-        for (int i = 0; i < 7; i++) {
-            Job job = new Job();
-            job.setJobTitle(faker.job().title());
-            job.setMaxSalary(faker.number().randomDouble(2, 1100, 12000));
-            job.setMinSalary(faker.number().randomDouble(2, 1000, 5000));
-            jobRepository.save(job);
-            jobList.add(job);
-        }
 
 
         for (int i = 0; i < 30; i++) {
@@ -119,18 +122,15 @@ public class Seeder implements CommandLineRunner {
 
         }
 
-
-        for (int i = 0; i < 25; i++){
+        for (int i = 0; i < 25; i++) {
 
             JobHistory jobHistory = new JobHistory();
-            jobHistory.setEmployeeId(employeeRepository.findById(faker.number().numberBetween(1L,30L)).get());
+            jobHistory.setEmployeeId(employeeRepository.findById(faker.number().numberBetween(1L, 30L)).get());
             jobHistory.setJobId(jobList.get(random.nextInt(6)));
             jobHistory.setDepartment(departmentList.get(random.nextInt(13)));
             jobHistory.setStartDate(faker.date().past(1500, TimeUnit.DAYS));
             jobHistoryRepository.save(jobHistory);
         }
-
-
 
 
     }

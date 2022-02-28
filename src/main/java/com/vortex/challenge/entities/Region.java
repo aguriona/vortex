@@ -1,6 +1,5 @@
 package com.vortex.challenge.entities;
 
-
 import javax.persistence.*;
 import java.io.Serializable;
 

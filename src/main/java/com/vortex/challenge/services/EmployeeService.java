@@ -8,7 +8,6 @@ import com.vortex.challenge.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -50,26 +49,39 @@ public class EmployeeService implements IEmployeeServ {
     }
 
     @Override
-    public List<Employee> findAll(int page, int size,
-                                  Optional<Long> jobId,
-                                  Optional<Long> managerId,
-                                  Optional<String> lastname) throws NotFoundException{
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.ASC,"hireDate");
+    public List<Employee> findAllEmployees() {
+        return employeeRepository.findAll();
+    }
+
+    @Override
+    public Page<Employee> findAllPaginated(int page, int size) {
+
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.ASC, "hireDate");
+
+        return employeeRepository.findAll(pageRequest);
+    }
+
+    @Override  // Other example but not implemented because it is not a good practice
+    public List<Employee> findAllPaginatedAndFiltered(int page, int size,
+                                                      Optional<Long> jobId,
+                                                      Optional<Long> managerId,
+                                                      Optional<String> lastname) throws NotFoundException {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.ASC, "hireDate");
         if (pageRequest.isUnpaged()) throw new NotFoundException("Page not found");
 
         Page<Employee> employeePage = employeeRepository.findAll(pageRequest);
 
-        if (jobId.isPresent()){
-            return jobIdfilter(employeePage, jobId.get());
+        if (jobId.isPresent()) {
+            return jobIdFilter(employeePage, jobId.get());
         }
-        if (managerId.isPresent()){
-            return managerIdfilter(employeePage, managerId.get());
+        if (managerId.isPresent()) {
+            return managerIdFilter(employeePage, managerId.get());
         }
-        if (lastname.isPresent()){
-            return lastNamefilter(employeePage, lastname.get());
-        }else
+        if (lastname.isPresent()) {
+            return lastNameFilter(employeePage, lastname.get());
+        } else
             return employeePage.toList();
-            }
+    }
 
     @Override
     public ShowEmployeeDTO findById(Long id) throws EmployeeServiceException {
@@ -97,7 +109,6 @@ public class EmployeeService implements IEmployeeServ {
         if (updatedEmployee.isEmpty()) {
             throw new NotFoundException("Employee NOT found in DB");
         }
-
         updatedEmployee.get().setFirstName(employee.getFirstName());
         updatedEmployee.get().setLastName(employee.getLastName());
         updatedEmployee.get().setEmail(employee.getEmail());
@@ -110,13 +121,9 @@ public class EmployeeService implements IEmployeeServ {
     }
 
     @Override
-    public Optional<Employee> findByEmail(String email) throws EmployeeServiceException {
+    public Optional<Employee> findByEmail(String email) {
 
-        Optional<Employee> employee = employeeRepository.findByEmail(email);
-        if (employee.isPresent()) {
-            return employee;
-        } else throw new EmployeeServiceException("User not found");
-
+        return employeeRepository.findByEmail(email);
     }
 
     @Override
@@ -129,17 +136,19 @@ public class EmployeeService implements IEmployeeServ {
         System.out.println("Employee DELETED");
     }
 
-    public List<Employee> jobIdfilter (Page<Employee> employeePage, Long jobId) {
+    public List<Employee> jobIdFilter(Page<Employee> employeePage, Long jobId) {
         return employeePage.stream()
-                           .filter(employee -> employee.getJobId().getId().equals(jobId))
-                           .collect(Collectors.toList());
-    }
-    public List<Employee> managerIdfilter (Page<Employee> employeePage, Long managerId) {
-        return employeePage.stream()
-                .filter(employee -> employee.getManager().equals(managerId))
+                .filter(employee -> employee.getJobId().getId().equals(jobId))
                 .collect(Collectors.toList());
     }
-    public List<Employee> lastNamefilter (Page<Employee> employeePage, String lastName) {
+
+    public List<Employee> managerIdFilter(Page<Employee> employeePage, Long managerId) {
+        return employeePage.stream()
+                .filter(employee -> employee.getManager().getId().equals(managerId))
+                .collect(Collectors.toList());
+    }
+
+    public List<Employee> lastNameFilter(Page<Employee> employeePage, String lastName) {
         return employeePage.stream()
                 .filter(employee -> employee.getLastName().equalsIgnoreCase(lastName))
                 .collect(Collectors.toList());

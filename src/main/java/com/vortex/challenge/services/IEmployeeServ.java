@@ -3,26 +3,30 @@ package com.vortex.challenge.services;
 import com.vortex.challenge.dtos.CreateEmployeeDTO;
 import com.vortex.challenge.dtos.ShowEmployeeDTO;
 import com.vortex.challenge.entities.Employee;
-import com.vortex.challenge.exceptions.DataAlreadyExistException;
-
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface IEmployeeServ {
 
-    public Employee create (CreateEmployeeDTO employee) throws DataAlreadyExistException;
+    Employee create(CreateEmployeeDTO employee);
 
-    public List<Employee> findAll (int page, int size, Optional<Long> jobId,
-                                   Optional<Long> managerId,
-                                   Optional<String> lastname);
+    List<Employee> findAllEmployees();
 
-    public ShowEmployeeDTO findById (Long id);
+    Page<Employee> findAllPaginated(int page, int size);
 
-    public void update (Long id, Employee employee);
+    List<Employee> findAllPaginatedAndFiltered(int page, int size,
+                                               Optional<Long> jobId,
+                                               Optional<Long> managerId,
+                                               Optional<String> lastname);
 
-    public Optional<Employee> findByEmail (String email);
+    ShowEmployeeDTO findById(Long id);
 
-    public void deleteById (Long id);
+    void update(Long id, Employee employee);
+
+    Optional<Employee> findByEmail(String email);
+
+    void deleteById(Long id);
 
 }
